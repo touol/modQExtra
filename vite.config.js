@@ -2,6 +2,7 @@ import { defineConfig , loadEnv} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import {parse, resolve} from 'path'
 import { fileURLToPath } from 'url'
+import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({mode})=>{
@@ -24,9 +25,10 @@ export default defineConfig(async ({mode})=>{
             modulePreload: false,
             emptyOutDir: true,
             assetsDir: '',
+            cssCodeSplit: true,
             outDir: process.env.VITE_APP_OUTPUT_DIR,
             rollupOptions: {
-                external: ['vue'],
+                external: ['vue','quasar'],
                 // plugins: [ {
                 //     name: 'replace-importer', 
                 //     renderChunk(code) {
@@ -58,11 +60,21 @@ export default defineConfig(async ({mode})=>{
                     entryFileNames: 'js/[name].js',
                     globals: {
                         vue: 'Vue'
-                    }
+                    },
+                    // manualChunks: {
+                    //     vendor: ['quasar'],
+                    //   },
                 }
             }
         },
-        plugins: [vue()],
+        plugins: [
+            vue({
+                template: { transformAssetUrls }
+            }),
+            quasar({
+                sassVariables: 'src/quasar-variables.sass'
+            }),
+        ],
         resolve: {
             alias: {
                 '@': fileURLToPath(new URL('./src',import.meta.url))
