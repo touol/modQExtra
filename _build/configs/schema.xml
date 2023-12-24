@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="modqextra" baseClass="xPDOObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="modqextra"
+       version="1.1">
+    <object class="modQExtraItem" table="modqextra_items" extends="xPDOSimpleObject">
+        <field key="desc" dbtype="text" phptype="string" null="true" default=""/>
+    </object>
+</model>
